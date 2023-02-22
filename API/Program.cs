@@ -1,11 +1,4 @@
-using System.Text;
-using API.Data;
 using API.Extentions;
-using API.Interfaces;
-using API.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 
 //as this gets more full, I will extract some of the logic here into extension methods
 //extention methods allow me to extend a class in some way (could be a built-in class or one I wrote)
