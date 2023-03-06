@@ -17,7 +17,7 @@ builder.Services.AddIdentityServices(builder.Configuration);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyHeader()
+app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod()
 .WithOrigins("https://localhost:4200"));
 
 //add auth middelware after CORS adn before mapcontrollers

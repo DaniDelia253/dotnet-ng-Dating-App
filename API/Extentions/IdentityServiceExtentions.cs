@@ -20,6 +20,8 @@ namespace API.Extentions
                     };
                 });
             //this gives our server enough info to look at the token and authenticate
+            //this tells HOW to authenticate.. I also need to add the middlware to tell it to authenticate
+
 
             return services;
         }

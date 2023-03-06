@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore.Query;
 namespace API.Controllers
 
 {
+    [Authorize]
     //this class is created avery time a user makes a request to the endpoint
     public class UsersController : BaseApiController
     {
@@ -38,7 +39,8 @@ namespace API.Controllers
             //  map it to the obj we want to return
         }
         //if I want to ensure that only authorized users can access a specific endpoint, I can specify that via an attribute 
-        [Authorize]
+        // [Authorize]
+        //^this is commented though bc I added this attribute to the whole controller above to protect aLL routes :)
         //so bc of this users will only be able to access this endpoint if they pass an authentication token
         //tell the app HOW to authenticate in the program class (program.cs)
         [HttpGet("{id}")]
