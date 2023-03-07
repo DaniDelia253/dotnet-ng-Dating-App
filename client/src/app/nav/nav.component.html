@@ -1,7 +1,12 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
   <div class="container">
     <a class="navbar-brand" href="#">Dating App</a>
-    <ul class="navbar-nav me-auto mb-2 mb-md-0" *ngIf="loggedIn">
+    <ul
+      class="navbar-nav me-auto mb-2 mb-md-0"
+      *ngIf="acountService.currentUser$ | async"
+    >
+      <!-- ^ here instead of using the loggedIn property, or subscribing to the observable in the nav component and sending the property here, I am using the async pipe from an observable I put as a property in the component -->
+      <!-- ^^ basically this says that is this has something that is not null, we are logged in -->
       <li class="nav-item">
         <a class="nav-link" href="#">Matches</a>
       </li>
@@ -13,7 +18,7 @@
       </li>
     </ul>
 
-    <div dropdown class="dropdown" *ngIf="loggedIn">
+    <div dropdown class="dropdown" *ngIf="acountService.currentUser$ | async">
       <a dropdownToggle class="dropdown-toggle text-light text-decoration-none"
         >Welcome user!</a
       >
@@ -24,7 +29,7 @@
     </div>
 
     <form
-      *ngIf="!loggedIn"
+      *ngIf="!(acountService.currentUser$ | async)"
       #loginForm="ngForm"
       class="d-flex"
       (ngSubmit)="login()"

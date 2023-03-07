@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, map } from 'rxjs';
+import { User } from '../_models/user';
 
 @Injectable({
   providedIn: 'root',
@@ -11,9 +13,35 @@ export class AccountService {
 
   baseUrl = 'https://localhost:5001/api/';
 
+  //becasue many parts of the app will need access to the "logged-in" property that is stored in the nav right now, I am going to move that here so the whole app will have access
+  //I am going to use a special type of observable to store it: a behavior subject
+  private currentUserSource = new BehaviorSubject<User | null>(null);
+  currentUser$ = this.currentUserSource.asObservable();
+  //^the dollar is a convention to show that this is an observable
+
   constructor(private http: HttpClient) {}
 
   login(model: any) {
-    return this.http.post(this.baseUrl + 'account/login', model);
+    return this.http.post<User>(this.baseUrl + 'account/login', model).pipe(
+      //this will happen before the info gets to the subscription
+      //I am going to use it here to save the object to borwser storage so I can persist login data accross browser refreshes and even closes
+      map((response: User) => {
+        const user = response;
+        if (user) {
+          //when I am setting here, I need to turn the JSON response to a string bc that is what the browser can store
+          localStorage.setItem('user', JSON.stringify(user));
+          this.currentUserSource.next(user);
+        }
+      })
+    );
+  }
+
+  setCurrentUser(user: User) {
+    this.currentUserSource.next(user);
+  }
+
+  logout() {
+    localStorage.removeItem('user');
+    this.currentUserSource.next(null);
   }
 }
